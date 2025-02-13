@@ -1,1 +1,3 @@
-# shortify
+# Shortify
+
+App to create short URLs.
