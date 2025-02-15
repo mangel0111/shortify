@@ -3,7 +3,7 @@ type ConfigType = {
 }
 
 const Config: ConfigType = {
-    shortUrlService: 'https://localhost:8080'
+    shortUrlService: 'http://localhost:3000'
 }
 
 export default Config;

@@ -14,7 +14,7 @@ export const CopyButton: React.FC<CopyButtonProps> = ({ isCopied, onCopy }) => (
       variant="outlined"
       size="small"
       onClick={onCopy}
-      sx={{ textTransform: "none", width: "75px" }}
+      sx={{ textTransform: "none", width: "75px", marginLeft: "auto" }}
     >
       Copy
     </Button>
