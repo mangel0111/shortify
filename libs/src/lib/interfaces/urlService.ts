@@ -31,8 +31,22 @@ export type ShortUrlBaseResponse = {
      * The date the short URL was created
      */
     createdAt: string;
+    /**
+     * The user ID that created the short URL
+     */
+    userId: string;
+    /**
+     * The number of clicks the short URL has received
+     */
+    clicks: number;
   };
 };
 
 export type CreateShortenUrlResponse = ApiResponse<ShortUrlBaseResponse>;
 export type GetShortUrlsResponse = ApiResponse<ShortUrlBaseResponse[]>;
+export type GetShortUrlByIdResponse = ApiResponse<ShortUrlBaseResponse>;
+
+export type CreateShortenUrlRequest = {
+  originalUrl: string;
+  userId: string;
+};

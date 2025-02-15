@@ -1,4 +1,9 @@
-import { CreateShortenUrlResponse, UrlServiceType } from '@src/libs';
+import {
+  CreateShortenUrlRequest,
+  CreateShortenUrlResponse,
+  UrlServiceType,
+  generateShortId,
+} from '@src/libs';
 import {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
@@ -6,7 +11,10 @@ import {
   RouteHandlerMethod,
 } from 'fastify';
 
+import { APIConfig } from '../../config';
+
 export type CreateShortUrlRoutes = {
+  Body: CreateShortenUrlRequest;
   Reply: CreateShortenUrlResponse;
 };
 
@@ -15,15 +23,19 @@ export const createShortUrls: RouteHandlerMethod<
   RawRequestDefaultExpression<RawServerDefault>,
   RawReplyDefaultExpression<RawServerDefault>,
   CreateShortUrlRoutes
-> = () => {
+> = (request) => {
+  const { originalUrl, userId } = request.body;
+  const shortId = generateShortId(originalUrl);
   return {
     data: {
       type: UrlServiceType.SHORT_URL,
-      id: '123',
+      id: shortId,
       attributes: {
-        originalUrl: 'https://www.google.com',
-        shortUrl: 'https://short.url/123',
+        originalUrl,
+        shortUrl: `${APIConfig.commercialUrl}/${shortId}`,
         createdAt: new Date().toISOString(),
+        userId: userId,
+        clicks: 0,
       },
     },
   };

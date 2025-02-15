@@ -1,10 +1,12 @@
-import { GetShortUrlsResponse, UrlServiceType } from '@src/libs';
 import {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
   RawServerDefault,
   RouteHandlerMethod,
 } from 'fastify';
+
+import { GetShortUrlsResponse } from '@src/libs';
+import ShortURLService from '../../services/shortUrlService';
 
 export type GetShortUrlRoutes = {
   Reply: GetShortUrlsResponse;
@@ -15,18 +17,9 @@ export const getShortUrls: RouteHandlerMethod<
   RawRequestDefaultExpression<RawServerDefault>,
   RawReplyDefaultExpression<RawServerDefault>,
   GetShortUrlRoutes
-> = () => {
+> = async () => {
+  const shortUrls = await ShortURLService.getShortUrls();
   return {
-    data: [
-      {
-        type: UrlServiceType.SHORT_URL,
-        id: '123',
-        attributes: {
-          originalUrl: 'https://www.google.com',
-          shortUrl: 'https://short.url/123',
-          createdAt: new Date().toISOString(),
-        },
-      },
-    ],
+    data: shortUrls,
   };
 };

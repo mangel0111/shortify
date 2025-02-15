@@ -1,9 +1,12 @@
+import { APIConfig } from '../../config';
 import Redis from 'ioredis';
 
-let redis = new Redis({
-  host: 'localhost',
-  port: 6379,
-});
+const redisConfig = {
+  host: APIConfig.cache.host,
+  port: APIConfig.cache.port,
+};
+
+let redis = new Redis(redisConfig);
 
 /**
  * Handle the Redis instance,
@@ -13,10 +16,7 @@ let redis = new Redis({
  */
 const getRedisInstance = () => {
   if (!redis) {
-    redis = new Redis({
-      host: 'localhost',
-      port: 6379,
-    });
+    redis = new Redis(redisConfig);
   }
 
   return redis;
@@ -24,7 +24,7 @@ const getRedisInstance = () => {
 
 const CacheService = {
   check: async (): Promise<boolean> => {
-    const pingResponse = await getRedisInstance().ping()
+    const pingResponse = await getRedisInstance().ping();
     return pingResponse === 'PONG';
   },
   get: async (key: string) => {
