@@ -41,11 +41,11 @@ Based on similar systems with comparable functionality, the expected read/write 
 
 This means that the number of unique shortened links generated per second will be:
 
-<p style="text-align:center;font-style:italic;">100 million÷(30 days×24 hours×3600 seconds)≈40 URLs/second</p>
+<p align="center" style="text-align:center;font-style:italic;">100 million÷(30 days×24 hours×3600 seconds)≈40 URLs/second</p>
 
 With a **100:1 read/write** ratio, the number of redirections will be:
 
-<p style="text-align:center;font-style:italic;">40 URLs/s×100≈4000 URLs/s</p>
+<p align="center" style="text-align:center;font-style:italic;">40 URLs/s×100≈4000 URLs/s</p>
 
 ### Storage
 
@@ -53,11 +53,11 @@ With the previous estimation of traffic, assuming a life service of 50 years, we
 
 Based on the estimated traffic, assuming a service lifespan of 50 years, the total storage required will be:
 
-<p style="text-align:center;font-style:italic;">100 million URLs/month * 50 (years) * 12 (months) = 60 billion URLs</p>
+<p align="center" style="text-align:center;font-style:italic;">100 million URLs/month * 50 (years) * 12 (months) = 60 billion URLs</p>
 
 Given the data model's small size, we estimate an average record size of 500 bytes, leading to a total storage requirement of:
 
-<p style="text-align:center;font-style:italic;">60 billion * 500 bytes = 30TB</p>
+<p align="center" style="text-align:center;font-style:italic;">60 billion * 500 bytes = 30TB</p>
 
 ### General stats
 
