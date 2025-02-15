@@ -19,7 +19,9 @@
     "lint:api": "nx lint api",
     "build:api": "nx build api",
     " - - - - - - - CORE - - - - - - - ": "",
-    "graph": "nx graph"
+    "graph": "nx graph",
+    "start:infra": "docker compose up -d",
+    "stop:infra": "docker compose down"
   },
   "private": true,
   "dependencies": {
