@@ -22,6 +22,10 @@ npm run dev:ui
 
 This will start the UI development server.
 
+## Overview
+
+To found a detailed description of the decisions, and reasoning behind this app, check the [overview section here](docs/overview.md).
+
 ## Additional Information
 
 This project is built using [Nx](https://nx.dev/), a powerful monorepo tool for managing multiple projects efficiently.
