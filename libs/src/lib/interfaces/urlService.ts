@@ -9,10 +9,7 @@ export enum UrlServiceType {
   SHORT_URL = 'short-url',
 }
 
-/**
- * Response type for the shorten URL service
- */
-export type ShortenUrlResponse = ApiResponse<{
+export type ShortUrlBaseResponse = {
   /**
    * The type model of the response. e.g. 'short-url'
    */
@@ -35,4 +32,7 @@ export type ShortenUrlResponse = ApiResponse<{
      */
     createdAt: string;
   };
-}>;
+};
+
+export type CreateShortenUrlResponse = ApiResponse<ShortUrlBaseResponse>;
+export type GetShortUrlsResponse = ApiResponse<ShortUrlBaseResponse[]>;

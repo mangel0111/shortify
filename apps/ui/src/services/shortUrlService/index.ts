@@ -1,5 +1,5 @@
 import Config from '../../config';
-import { ShortenUrlResponse } from '@src/libs';
+import { CreateShortenUrlResponse } from '@src/libs';
 import axios from 'axios';
 
 const api = axios.create({
@@ -14,7 +14,7 @@ const api = axios.create({
  * @returns
  */
 export const shortenUrl = async (longUrl: string): Promise<string> => {
-  const { data } = await api.post<ShortenUrlResponse>('/urls', {
+  const { data } = await api.post<CreateShortenUrlResponse>('/urls', {
     data: {
       type: 'short-url',
       attributes: {
