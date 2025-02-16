@@ -22,5 +22,17 @@ export const redirectUrl: RouteHandlerMethod<
   const shortUrlId = request.params.shortUrlId;
   const shortUrl = await ShortURLService.getShortUrlByShortId(shortUrlId);
 
+  if (!shortUrl) {
+    reply.notFound();
+    return;
+  }
+  
+  /**
+   * Update click count
+   *
+   * This process is done asynchronously to avoid blocking the response.
+   */
+  ShortURLService.updateClickCountById(shortUrl.id);
+
   reply.redirect(shortUrl.attributes.originalUrl, 302);
 };

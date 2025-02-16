@@ -2,7 +2,7 @@
 
 This section provides details on the reasoning behind certain implementations, libraries, and architectural decisions.
 
-## WHat this app is intending to do
+## What this app is intending to do
 
 1. Generate a unique short URL for a given valid long URL.
 2. Redirect users to the original URL when they access the short URL.
@@ -74,7 +74,7 @@ This is a high level design
 
 - The **UI** will be hosted as a Single Page Application (SPA) and distributed via a Content Delivery Network (CDN).
 - The **API** should be designed to scale horizontally to support traffic spikes as needed.
-- A **Load Balancer** can be implemented to distribute requests and enforce rate limits. Additionally, a Web Application Firewall **(WAF)** could enhance security.
+- A **Load Balancer** can be implemented to distribute requests and enforce rate limits. Additionally, a Web Application Firewall **(WAF)** could enhance security. This layer it's out of the current implementation, but it need to be added to ensure performance and security.
 - All data will be stored in a database, that needs to ensure high availability and performance.
 - A **Redis** cache will be used to reduce the read load on the primary database.
 
@@ -125,6 +125,13 @@ MongoDB was choose over DynamoDB for the following reasons:
 
 While DynamoDB offers seamless scaling and management, its AWS dependency and pricing model make it less flexible for an open-source, cost-effective solution.
 
+#### Data Model
+
+The app have 2 models, one for the user and one for the shortened URL, to ensure we can fetch user info without affecting the read and writing on the short URL.
+
+For more info [check here.](./dataModels.md)
+
+
 ## Unique ID
 
 The short URLs need to be as compact as possible while still guaranteeing uniqueness for over 60 billion URLs.
@@ -136,6 +143,22 @@ To meet our requirements, the **maximum length should be 7** characters, as 3.5 
 
 To ensure uniqueness:
 
-We hash the original url and encode it in Base62, generating a short, user-friendly, and unique identifier.
+1. We hash the original url and encode it in Base62, generating a short, user-friendly, and unique identifier.
+2. To further eliminate collision risks, we can consider implementing a dedicated microservice for ID generation if scalability becomes a concern.
 
-To further eliminate collision risks, we can consider implementing a dedicated microservice for ID generation if scalability becomes a concern.
+**Note:** This app is using CRC32 over SHA hashing to ensure a shorter ID that could.
+
+## Redirection
+
+The redirection service is responsible for fetching the short URL and redirecting the request to the original URL. There are two status codes we can use for redirection:
+
+- **301 Moved Permanently**: This indicates that the requested URL has been permanently moved. The browser will cache the redirect, meaning subsequent requests for the same URL will not reach our service.
+- **302 Found (Temporary Redirect)**: This indicates that the requested URL is temporarily moved. The browser will continue to send future requests to our service instead of caching the redirect.
+  
+While using **301 redirects** could reduce the number of requests our service needs to handle, we require **302 redirects** because we need to track redirections, sources, and additional analytics data.
+
+### Handling Click Tracking and Concurrency
+
+To keep the implementation simple, we update the URL record's click count directly within our service. However, this can lead to **race conditions** when multiple clients access the same short URL simultaneously.
+
+A more robust approach would be to offload analytics tracking to a separate service or an external provider. Alternatively, we could use a queue-based system (e.g., Kafka, Redis Streams, or RabbitMQ) to process click updates asynchronously, ensuring data integrity and scalability.

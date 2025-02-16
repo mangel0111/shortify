@@ -46,3 +46,7 @@ export type CreateShortenUrlRequest = {
   originalUrl: string;
   userId: string;
 };
+
+export type GetShortUrlsRequest = {
+  userId?: string;
+};

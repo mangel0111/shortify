@@ -1,9 +1,10 @@
-import { IShortUrl, ShortUrlModel } from '../../models/shortUrl';
 import {
+  GetShortUrlsRequest,
   ShortUrlBaseResponse,
   UrlServiceType,
   generateShortIdWithCRC32,
 } from '@src/libs';
+import { IShortUrl, ShortUrlModel } from '../../models/shortUrl';
 
 import { APIConfig } from '../../config';
 import CacheService from '../../infrastructure/cache';
@@ -37,6 +38,12 @@ const getShortUrlById = async (
   return adaptShortUrlDBModelToShortUrlResponse(shortUrl);
 };
 
+const updateClickCountById = async (id: string): Promise<void> => {
+  await ShortUrlModel.findByIdAndUpdate(id, {
+    $inc: { clicks: 1 },
+  });
+};
+
 const getShortUrlByShortId = async (
   shortId: string
 ): Promise<ShortUrlBaseResponse | undefined> => {
@@ -56,17 +63,25 @@ const getShortUrlByShortId = async (
   if (!shortUrl) {
     return;
   }
-  
+
   const parsedShortUrl = adaptShortUrlDBModelToShortUrlResponse(shortUrl);
 
   // Store the URL in the cache
   CacheService.set(shortId, JSON.stringify(parsedShortUrl));
-  
+
   return parsedShortUrl;
 };
 
-const getShortUrls = async (): Promise<ShortUrlBaseResponse[]> => {
-  const shortUrls = await ShortUrlModel.find({});
+const getShortUrls = async ({
+  shortUrlIds,
+}: {
+  shortUrlIds?: string[];
+}): Promise<ShortUrlBaseResponse[]> => {
+  let query = {};
+  if (shortUrlIds) {
+    query = { shortId: { $in: shortUrlIds } };
+  }
+  const shortUrls = await ShortUrlModel.find(query);
   return shortUrls.map((shortUrl) =>
     adaptShortUrlDBModelToShortUrlResponse(shortUrl)
   );
@@ -115,6 +130,7 @@ const ShortURLService = {
   getShortUrlById,
   createShortUrl,
   getShortUrlByShortId,
+  updateClickCountById,
 };
 
 export default ShortURLService;

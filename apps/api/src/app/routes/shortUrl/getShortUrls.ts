@@ -1,3 +1,4 @@
+import { GetShortUrlsRequest, GetShortUrlsResponse } from '@src/libs';
 import {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
@@ -5,11 +6,12 @@ import {
   RouteHandlerMethod,
 } from 'fastify';
 
-import { GetShortUrlsResponse } from '@src/libs';
 import ShortURLService from '../../services/shortUrlService';
+import UserService from '../../services/userService';
 
 export type GetShortUrlRoutes = {
   Reply: GetShortUrlsResponse;
+  Querystring: GetShortUrlsRequest;
 };
 
 export const getShortUrls: RouteHandlerMethod<
@@ -17,8 +19,17 @@ export const getShortUrls: RouteHandlerMethod<
   RawRequestDefaultExpression<RawServerDefault>,
   RawReplyDefaultExpression<RawServerDefault>,
   GetShortUrlRoutes
-> = async () => {
-  const shortUrls = await ShortURLService.getShortUrls();
+> = async (request) => {
+  let shortUrlIds;
+  if (request?.query?.userId) {
+    const user = await UserService.getUserById(request.query.userId);
+    shortUrlIds = user.attributes.urlsShortened.map((url) =>
+      url.split('/').pop()
+    );
+  }
+  const shortUrls = await ShortURLService.getShortUrls({
+    shortUrlIds,
+  });
   return {
     data: shortUrls,
   };
