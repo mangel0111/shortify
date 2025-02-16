@@ -5,10 +5,10 @@ import {
   RouteHandlerMethod,
 } from 'fastify';
 
-import {
-GetUserByIdResponse,
-} from '@src/libs';
+import { GetUserByIdResponse } from '@src/libs';
 import UserService from '../../services/userService';
+import { dbIdSchema } from '../../utils/schema.utils';
+import { z } from 'zod';
 
 export type GetUserByIdRoutes = {
   Reply: GetUserByIdResponse;
@@ -16,6 +16,10 @@ export type GetUserByIdRoutes = {
     id: string;
   };
 };
+
+export const getUserByIdParamsSchema = z.object({
+  id: dbIdSchema(),
+});
 
 export const getUserById: RouteHandlerMethod<
   RawServerDefault,

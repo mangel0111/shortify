@@ -1,3 +1,5 @@
+import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
+
 import Fastify from 'fastify';
 import { app } from './app/app';
 import cors from '@fastify/cors';
@@ -12,6 +14,9 @@ const server = Fastify({
 void server.register(cors, {
   // put your options here
 });
+
+server.setValidatorCompiler(validatorCompiler);
+server.setSerializerCompiler(serializerCompiler);
 
 // Register your application as a normal plugin.
 server.register(app);

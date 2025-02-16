@@ -7,11 +7,18 @@ import {
 } from 'fastify';
 
 import UserService from '../../services/userService';
+import z from 'zod';
 
 export type CreateUserRoutes = {
   Body: CreateUserRequest;
   Reply: CreateUserResponse;
 };
+
+export const createUserBodySchema = z
+  .object({
+    name: z.string().max(255),
+  })
+  .strict();
 
 export const createUser: RouteHandlerMethod<
   RawServerDefault,
@@ -19,11 +26,9 @@ export const createUser: RouteHandlerMethod<
   RawReplyDefaultExpression<RawServerDefault>,
   CreateUserRoutes
 > = async (request) => {
-  const { email, firstName, lastName } = request.body;
+  const { name } = request.body;
   const user = await UserService.createUser({
-    email,
-    firstName,
-    lastName,
+    name,
   });
   return {
     data: user,

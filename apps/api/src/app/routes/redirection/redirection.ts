@@ -6,12 +6,17 @@ import {
 } from 'fastify';
 
 import ShortURLService from '../../services/shortUrlService';
+import z from "zod";
 
 export type RedirectRoute = {
   Params: {
     shortUrlId: string;
   };
 };
+
+export const redirectUrlParamSchema = z.object({
+    shortUrlId: z.string().min(1).max(7),
+})
 
 export const redirectUrl: RouteHandlerMethod<
   RawServerDefault,

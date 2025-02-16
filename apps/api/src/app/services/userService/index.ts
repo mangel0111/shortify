@@ -7,9 +7,7 @@ const adaptUserDBModelToUserResponse = (user: IUser): UserBaseResponse => {
     id: user._id.toString(),
     attributes: {
       urlsShortened: user.urlsShortened,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
+      name: user.name,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     },
@@ -41,9 +39,7 @@ const UserService = {
   },
   createUser: async (user: CreateUserRequest): Promise<UserBaseResponse> => {
     const newUser = new UserModel({
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
+      name: user.name,
     });
 
     await newUser.save();

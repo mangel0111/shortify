@@ -7,11 +7,20 @@ import {
 } from 'fastify';
 
 import ShortURLService from '../../services/shortUrlService';
+import { dbIdSchema } from '../../utils/schema.utils';
+import z from 'zod';
 
 export type CreateShortUrlRoutes = {
   Body: CreateShortenUrlRequest;
   Reply: CreateShortenUrlResponse;
 };
+
+export const createShortUrlBodySchema = z
+  .object({
+    userId: dbIdSchema(),
+    originalUrl: z.string().url(),
+  })
+  .strict();
 
 export const createShortUrls: RouteHandlerMethod<
   RawServerDefault,

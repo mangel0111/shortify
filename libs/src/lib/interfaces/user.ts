@@ -4,15 +4,7 @@ type UserAttributesProps = {
   /**
    *
    */
-  firstName: string;
-  /**
-   *
-   */
-  lastName: string;
-  /**
-   *
-   */
-  email: string;
+  name: string;
 };
 
 /**

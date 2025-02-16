@@ -7,9 +7,7 @@ import mongoose, { Document } from 'mongoose';
 
 export interface IUser extends Document {
   urlsShortened: string[];
-  firstName?: string;
-  lastName?: string;
-  email?: string;
+  name: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -17,9 +15,7 @@ export interface IUser extends Document {
 const UserSchema = new mongoose.Schema<IUser>(
   {
     urlsShortened: { type: [String], default: [] },
-    firstName: { type: String },
-    lastName: { type: String },
-    email: { type: String },
+    name: { type: String },
   },
   { timestamps: true }
 );

@@ -1,6 +1,18 @@
-import { CreateShortUrlRoutes, createShortUrls } from './createShortUrl';
-import { GetShortUrlByIdRoutes, getShortUrlById } from './getShortUrlById';
-import { GetShortUrlRoutes, getShortUrls } from './getShortUrls';
+import {
+  CreateShortUrlRoutes,
+  createShortUrlBodySchema,
+  createShortUrls,
+} from './createShortUrl';
+import {
+  GetShortUrlByIdRoutes,
+  getShortUrlById,
+  getShortUrlByIdParamsSchema,
+} from './getShortUrlById';
+import {
+  GetShortUrlRoutes,
+  getShortUrlQuerySchema,
+  getShortUrls,
+} from './getShortUrls';
 
 import { FastifyInstance } from 'fastify';
 import { userExistsValidation } from '../../services/userService/userValidations';
@@ -12,16 +24,25 @@ export const registerShortUrlRoutes = async (fastify: FastifyInstance) => {
     method: 'GET',
     url: SHORT_URL_ROUTE,
     handler: getShortUrls,
+    schema: {
+      querystring: getShortUrlQuerySchema,
+    },
   });
   fastify.route<GetShortUrlByIdRoutes>({
     method: 'GET',
     url: `${SHORT_URL_ROUTE}/:id`,
     handler: getShortUrlById,
+    schema: {
+      params: getShortUrlByIdParamsSchema,
+    },
   });
   fastify.route<CreateShortUrlRoutes>({
     method: 'POST',
     url: SHORT_URL_ROUTE,
     preValidation: [userExistsValidation],
     handler: createShortUrls,
+    schema: {
+      body: createShortUrlBodySchema,
+    },
   });
 };
