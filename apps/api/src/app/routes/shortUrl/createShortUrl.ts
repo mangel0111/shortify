@@ -1,9 +1,4 @@
-import {
-  CreateShortenUrlRequest,
-  CreateShortenUrlResponse,
-  UrlServiceType,
-  generateShortIdWithCRC32,
-} from '@src/libs';
+import { CreateShortenUrlRequest, CreateShortenUrlResponse } from '@src/libs';
 import {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
@@ -11,7 +6,7 @@ import {
   RouteHandlerMethod,
 } from 'fastify';
 
-import { APIConfig } from '../../config';
+import ShortURLService from '../../services/shortUrlService';
 
 export type CreateShortUrlRoutes = {
   Body: CreateShortenUrlRequest;
@@ -23,20 +18,13 @@ export const createShortUrls: RouteHandlerMethod<
   RawRequestDefaultExpression<RawServerDefault>,
   RawReplyDefaultExpression<RawServerDefault>,
   CreateShortUrlRoutes
-> = (request) => {
+> = async (request) => {
   const { originalUrl, userId } = request.body;
-  const shortId = generateShortIdWithCRC32(originalUrl);
+  const shortUrl = await ShortURLService.createShortUrl({
+    originalUrl,
+    userId,
+  });
   return {
-    data: {
-      type: UrlServiceType.SHORT_URL,
-      id: shortId,
-      attributes: {
-        originalUrl,
-        shortUrl: `${APIConfig.commercialUrl}/${shortId}`,
-        createdAt: new Date().toISOString(),
-        userId: userId,
-        clicks: 0,
-      },
-    },
+    data: shortUrl,
   };
 };

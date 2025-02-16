@@ -23,6 +23,11 @@ export type ShortUrlBaseResponse = {
      */
     createdAt: string;
     /**
+     * updatedAt
+     *
+     */
+    updatedAt: string;
+    /**
      * The number of clicks the short URL has received
      */
     clicks: number;

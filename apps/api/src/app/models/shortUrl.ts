@@ -7,20 +7,24 @@ import mongoose, { Document } from 'mongoose';
 
 export interface IShortUrl extends Document {
   id: string;
-  userId: string;
   originalUrl: string;
   shortUrl: string;
-  createdAt: string;
   clicks?: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
-const ShortUrlSchema = new mongoose.Schema<IShortUrl>({
-  id: { type: String, required: true, unique: true, index: true }, // Ensures uniqueness & performance
-  userId: { type: String, required: true },
-  originalUrl: { type: String, required: true },
-  shortUrl: { type: String, required: true },
-  createdAt: { type: String, default: () => new Date().toISOString() },
-  clicks: { type: Number, default: 0 },
-});
+const ShortUrlSchema = new mongoose.Schema<IShortUrl>(
+  {
+    id: { type: String, required: true, unique: true, index: true }, // Ensures uniqueness & performance
+    originalUrl: { type: String, required: true },
+    shortUrl: { type: String, required: true },
+    clicks: { type: Number, default: 0 },
+  },
+  { timestamps: true }
+);
 
-export const ShortUrlModel = mongoose.model<IShortUrl>('short_urls', ShortUrlSchema);
+export const ShortUrlModel = mongoose.model<IShortUrl>(
+  'short_urls',
+  ShortUrlSchema
+);

@@ -1,8 +1,6 @@
 import { CreateUserRequest, UrlServiceType, UserBaseResponse } from '@src/libs';
 import { IUser, UserModel } from '../../models/user';
 
-import { createUser } from '../../routes/user/createUser';
-
 const adaptUserDBModelToUserResponse = (user: IUser): UserBaseResponse => {
   return {
     type: UrlServiceType.USER,
@@ -12,6 +10,8 @@ const adaptUserDBModelToUserResponse = (user: IUser): UserBaseResponse => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
     },
   };
 };
@@ -28,6 +28,17 @@ const UserService = {
   },
   getUserById: async (id: string): Promise<UserBaseResponse> => {
     const user = await UserModel.findById(id);
+    return adaptUserDBModelToUserResponse(user);
+  },
+  addUrlToUser: async (
+    id: string,
+    newUrl: string
+  ): Promise<UserBaseResponse> => {
+    const user = await UserModel.findOneAndUpdate(
+      { id },
+      { $push: { urlsShortened: newUrl } },
+      { new: true }
+    );
     return adaptUserDBModelToUserResponse(user);
   },
   createUser: async (user: CreateUserRequest): Promise<UserBaseResponse> => {

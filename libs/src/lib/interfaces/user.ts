@@ -32,6 +32,14 @@ export type UserBaseResponse = {
      * The shortened URLs associated with the user
      */
     urlsShortened: string[];
+    /**
+     * Created at date
+     */
+    createdAt: string;
+    /**
+     * Updated at date
+     */
+    updatedAt: string;
   } & UserAttributesProps;
 };
 
