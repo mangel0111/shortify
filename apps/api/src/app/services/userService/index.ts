@@ -30,16 +30,11 @@ const UserService = {
     const user = await UserModel.findById(id);
     return adaptUserDBModelToUserResponse(user);
   },
-  addUrlToUser: async (
-    id: string,
-    newUrl: string
-  ): Promise<UserBaseResponse> => {
-    const user = await UserModel.findOneAndUpdate(
+  addUrlToUser: async (id: string, newUrl: string): Promise<void> => {
+    await UserModel.findOneAndUpdate(
       { id },
-      { $push: { urlsShortened: newUrl } },
-      { new: true }
+      { $push: { urlsShortened: newUrl } }
     );
-    return adaptUserDBModelToUserResponse(user);
   },
   createUser: async (user: CreateUserRequest): Promise<UserBaseResponse> => {
     const newUser = new UserModel({
