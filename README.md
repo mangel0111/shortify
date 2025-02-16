@@ -1,6 +1,6 @@
 # Shortify
 
-App to create short URLs. 
+App to create short URLs.
 
 ## Setup
 
@@ -45,7 +45,15 @@ To start the UI application, run:
 npm run dev:api
 ```
 
-This will start the API development server, in the [http://localhost:3000](http://localhost:3000).
+## Running all with just one command
+
+To run both UI and API you can use:
+
+```bash
+npm run start
+```
+
+This will start both the API and the UI concurrently.
 
 ## Overview
 
@@ -55,3 +63,7 @@ To found a detailed description of the decisions, and reasoning behind this app,
 
 This project is built using [Nx](https://nx.dev/), a powerful monorepo tool for managing multiple projects efficiently.
 On the UI, the app is build using React and Vite. To ensure performance it's using Tankstank.
+
+Enjoy shortening your URLs!
+
+![Alt text](docs/main_ui.png?raw=true "")
