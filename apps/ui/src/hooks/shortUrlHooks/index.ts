@@ -1,12 +1,12 @@
 import { useCallback, useState } from 'react';
 
+import { createShortenUrl } from '../../services/shortUrlService';
 import { isValidURL } from '@src/libs';
-import { shortenUrl } from '../../services/shortUrlService';
 import { useMutation } from '@tanstack/react-query';
 import { useUser } from '../../app/hooks/user';
 
 export const useShortenUrl = () => {
-  return useMutation({ mutationFn: shortenUrl });
+  return useMutation({ mutationFn: createShortenUrl });
 };
 
 export const useUrlShortener = () => {

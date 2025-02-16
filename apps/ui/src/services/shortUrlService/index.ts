@@ -1,5 +1,6 @@
+import { CreateShortenUrlResponse, GetShortUrlsResponse } from '@src/libs';
+
 import Config from '../../config';
-import { CreateShortenUrlResponse } from '@src/libs';
 import axios from 'axios';
 
 const api = axios.create({
@@ -12,7 +13,7 @@ const api = axios.create({
  * @param longUrl
  * @returns
  */
-export const shortenUrl = async ({
+export const createShortenUrl = async ({
   longUrl,
   userId,
 }: {
@@ -24,4 +25,13 @@ export const shortenUrl = async ({
     userId,
   });
   return data?.data?.attributes?.shortUrl;
+};
+
+export const fetchShortUrls = async ({ userId }: { userId: string }) => {
+  const { data } = await api.get<GetShortUrlsResponse>('/short-url', {
+    params: {
+      userId,
+    },
+  });
+  return data.data ?? [];
 };

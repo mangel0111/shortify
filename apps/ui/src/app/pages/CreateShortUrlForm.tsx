@@ -4,8 +4,8 @@ import { green, purple } from '@mui/material/colors';
 import { CopyButton } from '../components/CopyButtons';
 import { CreateShortUrlFormIDs } from './constants';
 import { FC } from 'react';
-import FormCard from '../components/Card';
 import PageContainer from '../components/Container';
+import PanelCard from '../components/Card';
 import { useUrlShortener } from '../../hooks/shortUrlHooks';
 
 const CreateShortUrlForm: FC = () => {
@@ -14,7 +14,7 @@ const CreateShortUrlForm: FC = () => {
 
   return (
     <PageContainer>
-      <FormCard>
+      <PanelCard>
         <Typography
           data-testid={CreateShortUrlFormIDs.title}
           variant="h6"
@@ -97,7 +97,7 @@ const CreateShortUrlForm: FC = () => {
             </Box>
           </Box>
         )}
-      </FormCard>
+      </PanelCard>
     </PageContainer>
   );
 };
