@@ -16,7 +16,7 @@ export interface IShortUrl extends Document {
 
 const ShortUrlSchema = new mongoose.Schema<IShortUrl>(
   {
-    shortId: { type: String, required: true },  
+    shortId: { type: String, required: true, unique: true, index: true },  
     originalUrl: { type: String, required: true },
     shortUrl: { type: String, required: true },
     clicks: { type: Number, default: 0 },
