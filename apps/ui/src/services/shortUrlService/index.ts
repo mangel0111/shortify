@@ -12,10 +12,16 @@ const api = axios.create({
  * @param longUrl
  * @returns
  */
-export const shortenUrl = async (longUrl: string): Promise<string> => {
+export const shortenUrl = async ({
+  longUrl,
+  userId,
+}: {
+  longUrl: string;
+  userId: string;
+}): Promise<string> => {
   const { data } = await api.post<CreateShortenUrlResponse>('/short-url', {
     originalUrl: longUrl,
-    userId: '123',
+    userId,
   });
   return data?.data?.attributes?.shortUrl;
 };

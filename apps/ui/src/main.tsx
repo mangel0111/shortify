@@ -7,6 +7,7 @@ import '@fontsource/roboto/700.css';
 import * as ReactDOM from 'react-dom/client';
 
 import App from './app/app';
+import { BrowserRouter } from "react-router";
 import { StrictMode } from 'react';
 
 const root = ReactDOM.createRoot(
@@ -17,6 +18,8 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <StrictMode>
+    <BrowserRouter>
       <App />
+    </BrowserRouter>
   </StrictMode>
 );
