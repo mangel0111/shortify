@@ -4,7 +4,7 @@ import { IUser, UserModel } from '../../models/user';
 const adaptUserDBModelToUserResponse = (user: IUser): UserBaseResponse => {
   return {
     type: UrlServiceType.USER,
-    id: user.id,
+    id: user._id.toString(),
     attributes: {
       urlsShortened: user.urlsShortened,
       firstName: user.firstName,
@@ -30,11 +30,14 @@ const UserService = {
     const user = await UserModel.findById(id);
     return adaptUserDBModelToUserResponse(user);
   },
+  userExists: async (id: string) => {
+    const user = await UserModel.findById(id, { _id: 1 });
+    return user;
+  },
   addUrlToUser: async (id: string, newUrl: string): Promise<void> => {
-    await UserModel.findOneAndUpdate(
-      { id },
-      { $push: { urlsShortened: newUrl } }
-    );
+    await UserModel.findByIdAndUpdate(id, {
+      $addToSet: { urlsShortened: newUrl },
+    });
   },
   createUser: async (user: CreateUserRequest): Promise<UserBaseResponse> => {
     const newUser = new UserModel({

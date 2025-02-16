@@ -13,8 +13,9 @@ const adaptShortUrlDBModelToShortUrlResponse = (
 ): ShortUrlBaseResponse => {
   return {
     type: UrlServiceType.SHORT_URL,
-    id: shortUrl.id,
+    id: shortUrl._id.toString(),
     attributes: {
+      shortId: shortUrl.shortId,
       originalUrl: shortUrl.originalUrl,
       shortUrl: shortUrl.shortUrl,
       clicks: shortUrl.clicks,
@@ -28,6 +29,19 @@ const getShortUrlById = async (
   id: string
 ): Promise<ShortUrlBaseResponse | undefined> => {
   const shortUrl = await ShortUrlModel.findById(id);
+
+  if (!shortUrl) {
+    return;
+  }
+  return adaptShortUrlDBModelToShortUrlResponse(shortUrl);
+};
+
+const getShortUrlByShortId = async (
+  shortId: string
+): Promise<ShortUrlBaseResponse | undefined> => {
+  const shortUrl = await ShortUrlModel.findOne({
+    shortId,
+  });
 
   if (!shortUrl) {
     return;
@@ -53,18 +67,18 @@ const createShortUrl = async ({
    * Generate ID from the original URL, we could use a combination of the user ID and the original URL
    * to ensure uniqueness, but this initial implementation will use just the original URL.
    */
-  const id = generateShortIdWithCRC32(originalUrl);
+  const shortId = generateShortIdWithCRC32(originalUrl);
 
   // Check if the short URL already exists, if it does, return it
-  const existingUrl = await getShortUrlById(id);
+  const existingUrl = await getShortUrlByShortId(shortId);
   if (existingUrl) {
     await UserService.addUrlToUser(userId, existingUrl.attributes.shortUrl);
     return existingUrl;
   }
 
-  const shortUrl = `${APIConfig.commercialUrl}/${id}`;
+  const shortUrl = `${APIConfig.commercialUrl}/${shortId}`;
   const newUrl = new ShortUrlModel({
-    id,
+    shortId,
     originalUrl: originalUrl,
     shortUrl,
     clicks: 0,
@@ -84,6 +98,7 @@ const ShortURLService = {
   getShortUrls,
   getShortUrlById,
   createShortUrl,
+  getShortUrlByShortId,
 };
 
 export default ShortURLService;

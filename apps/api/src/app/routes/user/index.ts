@@ -3,6 +3,7 @@ import { GetUserByIdRoutes, getUserById } from './getUserById';
 import { GetUsersRoutes, getUsers } from './getUsers';
 
 import { FastifyInstance } from 'fastify';
+import { userExistsValidation } from '../../services/userService/userValidations';
 
 const USER_ROUTE = '/user';
 
@@ -15,6 +16,7 @@ export const registerUserRoutes = async (fastify: FastifyInstance) => {
   fastify.route<GetUserByIdRoutes>({
     method: 'GET',
     url: `${USER_ROUTE}/:id`,
+    preValidation: [userExistsValidation],
     handler: getUserById,
   });
   fastify.route<CreateUserRoutes>({

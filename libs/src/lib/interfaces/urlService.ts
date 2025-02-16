@@ -6,10 +6,14 @@ export type ShortUrlBaseResponse = {
    */
   type: UrlServiceType.SHORT_URL;
   /**
-   * The unique identifier of the short Id
+   * The unique identifier of the URL
    */
   id: string;
   attributes: {
+    /**
+     * The short ID that is used to access the short URL
+     */
+    shortId: string;
     /**
      * The original URL that was shortened
      */

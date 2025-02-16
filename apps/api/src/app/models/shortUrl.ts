@@ -6,7 +6,7 @@
 import mongoose, { Document } from 'mongoose';
 
 export interface IShortUrl extends Document {
-  id: string;
+  shortId: string;
   originalUrl: string;
   shortUrl: string;
   clicks?: number;
@@ -16,7 +16,7 @@ export interface IShortUrl extends Document {
 
 const ShortUrlSchema = new mongoose.Schema<IShortUrl>(
   {
-    id: { type: String, required: true, unique: true, index: true }, // Ensures uniqueness & performance
+    shortId: { type: String, required: true },  
     originalUrl: { type: String, required: true },
     shortUrl: { type: String, required: true },
     clicks: { type: Number, default: 0 },
