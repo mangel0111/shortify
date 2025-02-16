@@ -1,7 +1,7 @@
 /**
- * ShortUrlService
+ * Short Url Model
  *
- * This service is responsible for handling the logic for the short url service.
+ * This service is responsible for handling the logic for the short url model, validations, and integration with the DB.
  */
 import mongoose, { Document } from 'mongoose';
 
@@ -23,4 +23,4 @@ const ShortUrlSchema = new mongoose.Schema<IShortUrl>({
   clicks: { type: Number, default: 0 },
 });
 
-export const ShortUrlModel = mongoose.model<IShortUrl>('ShortUrl', ShortUrlSchema);
+export const ShortUrlModel = mongoose.model<IShortUrl>('short_urls', ShortUrlSchema);

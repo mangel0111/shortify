@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import { registerHealthRoutes } from './health';
-import { registerShortUrlRoutes } from './shortUrlRoutes';
+import { registerShortUrlRoutes } from './shortUrl';
+import { registerUserRoutes } from './user';
 
 export default async function (fastify: FastifyInstance) {
   // Default route
@@ -8,7 +9,12 @@ export default async function (fastify: FastifyInstance) {
     return { message: 'Hello API' };
   });
 
+  // Register health routes
   fastify.register(registerHealthRoutes);
 
+  // Register short URL routes
   fastify.register(registerShortUrlRoutes);
+
+  // Register user routes
+  fastify.register(registerUserRoutes);
 }

@@ -5,5 +5,9 @@
   "type": "module",
   "main": "./index.js",
   "types": "./index.d.ts",
-  "dependencies": {}
+  "dependencies": {
+    "crc-32": "^1.2.2",
+    "crypto-js": "^4.2.0",
+    "base-x": "^5.0.0"
+  }
 }

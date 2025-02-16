@@ -1,13 +1,4 @@
-/**
- * Response type for the shorten URL service
- */
-type ApiResponse<T> = {
-  data: T;
-};
-
-export enum UrlServiceType {
-  SHORT_URL = 'short-url',
-}
+import { ApiResponse, UrlServiceType } from './common';
 
 export type ShortUrlBaseResponse = {
   /**
@@ -31,10 +22,6 @@ export type ShortUrlBaseResponse = {
      * The date the short URL was created
      */
     createdAt: string;
-    /**
-     * The user ID that created the short URL
-     */
-    userId: string;
     /**
      * The number of clicks the short URL has received
      */

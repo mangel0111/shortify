@@ -2,7 +2,7 @@ import {
   CreateShortenUrlRequest,
   CreateShortenUrlResponse,
   UrlServiceType,
-  generateShortId,
+  generateShortIdWithCRC32,
 } from '@src/libs';
 import {
   RawReplyDefaultExpression,
@@ -25,7 +25,7 @@ export const createShortUrls: RouteHandlerMethod<
   CreateShortUrlRoutes
 > = (request) => {
   const { originalUrl, userId } = request.body;
-  const shortId = generateShortId(originalUrl);
+  const shortId = generateShortIdWithCRC32(originalUrl);
   return {
     data: {
       type: UrlServiceType.SHORT_URL,

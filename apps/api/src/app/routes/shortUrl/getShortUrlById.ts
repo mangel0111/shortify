@@ -9,7 +9,7 @@ import { GetShortUrlByIdResponse } from '@src/libs';
 import ShortURLService from '../../services/shortUrlService';
 
 export type GetShortUrlByIdRoutes = {
-  Querystring: {
+  Params: {
     id: string;
   }
   Reply: GetShortUrlByIdResponse;
@@ -21,7 +21,7 @@ export const getShortUrlById: RouteHandlerMethod<
   RawReplyDefaultExpression<RawServerDefault>,
   GetShortUrlByIdRoutes
 > = async (request) => {
-  const shortUrl = await ShortURLService.getShortUrlById(request.query.id);
+  const shortUrl = await ShortURLService.getShortUrlById(request.params.id);
   return {
     data: shortUrl,
   };

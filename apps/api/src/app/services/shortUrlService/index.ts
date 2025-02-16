@@ -1,7 +1,7 @@
 import { IShortUrl, ShortUrlModel } from '../../models/shortUrl';
 import { ShortUrlBaseResponse, UrlServiceType } from '@src/libs';
 
-const convertModelRecordToBaseResponse = (
+const adaptShortUrlDBModelToShortUrlResponse = (
   shortUrl: IShortUrl
 ): ShortUrlBaseResponse => {
   return {
@@ -11,7 +11,6 @@ const convertModelRecordToBaseResponse = (
       originalUrl: shortUrl.originalUrl,
       shortUrl: shortUrl.shortUrl,
       createdAt: shortUrl.createdAt,
-      userId: shortUrl.userId,
       clicks: shortUrl.clicks,
     },
   };
@@ -26,12 +25,12 @@ const ShortURLService = {
   getShortUrls: async (): Promise<ShortUrlBaseResponse[]> => {
     const shortUrls = await ShortUrlModel.find({});
     return shortUrls.map((shortUrl) =>
-      convertModelRecordToBaseResponse(shortUrl)
+      adaptShortUrlDBModelToShortUrlResponse(shortUrl)
     );
   },
   getShortUrlById: async (id: string): Promise<ShortUrlBaseResponse> => {
     const shortUrl = await ShortUrlModel.findById(id);
-    return convertModelRecordToBaseResponse(shortUrl);
+    return adaptShortUrlDBModelToShortUrlResponse(shortUrl);
   },
 };
 
