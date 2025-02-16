@@ -6,6 +6,7 @@ import {
 } from '@src/libs';
 
 import { APIConfig } from '../../config';
+import CacheService from '../../infrastructure/cache';
 import UserService from '../userService';
 
 const adaptShortUrlDBModelToShortUrlResponse = (
@@ -39,6 +40,15 @@ const getShortUrlById = async (
 const getShortUrlByShortId = async (
   shortId: string
 ): Promise<ShortUrlBaseResponse | undefined> => {
+  const cachedUrl = await CacheService.get(shortId);
+
+  /**
+   * If the URL is cached, return it
+   */
+  if (cachedUrl) {
+    return JSON.parse(cachedUrl) as ShortUrlBaseResponse;
+  }
+
   const shortUrl = await ShortUrlModel.findOne({
     shortId,
   });
@@ -46,7 +56,13 @@ const getShortUrlByShortId = async (
   if (!shortUrl) {
     return;
   }
-  return adaptShortUrlDBModelToShortUrlResponse(shortUrl);
+  
+  const parsedShortUrl = adaptShortUrlDBModelToShortUrlResponse(shortUrl);
+
+  // Store the URL in the cache
+  CacheService.set(shortId, JSON.stringify(parsedShortUrl));
+  
+  return parsedShortUrl;
 };
 
 const getShortUrls = async (): Promise<ShortUrlBaseResponse[]> => {
