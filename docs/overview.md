@@ -210,3 +210,4 @@ To further enhance the system, the following improvements are planned:
 - User Account Management: Implementing proper account setup, including authentication, authorization, and user profile management.
 - API Pagination: Adding pagination support to improve performance and usability of the endpoints.
 - Editable Short URLs: Allowing users to modify their own shortened URLs. To maintain uniqueness, the short URL ID will be generated using a hash of the UserId + URL.
+- Handle analytics without updating the DB directly, currently for simplicity each redirection is updating the count on the DB. This could be handled with an async process and a queue.
