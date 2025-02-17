@@ -14,7 +14,7 @@ export const createUser = async () => {
   return data?.data;
 };
 
-export const fetchUser = async (userId: string) => {
+export const fetchUser = async (userId?: string) => {
   try {
     const { data } = await api.get<CreateUserResponse>(`/user/${userId}`);
     return data?.data;

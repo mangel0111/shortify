@@ -1,10 +1,9 @@
-import {
-  GetShortUrlsRequest,
-  ShortUrlBaseResponse,
-  UrlServiceType,
-  generateShortIdWithCRC32,
-} from '@src/libs';
 import { IShortUrl, ShortUrlModel } from '../../models/shortUrl';
+import {
+ShortUrlBaseResponse,
+UrlServiceType,
+generateShortIdWithCRC32,
+} from '@src/libs';
 
 import { APIConfig } from '../../config';
 import CacheService from '../../infrastructure/cache';

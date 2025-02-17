@@ -4,7 +4,6 @@ import { GetUsersRoutes, getUsers } from './getUsers';
 
 import { FastifyInstance } from 'fastify';
 import { userExistsValidation } from '../../services/userService/userValidations';
-import z from "zod";
 
 const USER_ROUTE = '/user';
 
