@@ -162,3 +162,32 @@ While using **301 redirects** could reduce the number of requests our service ne
 To keep the implementation simple, we update the URL record's click count directly within our service. However, this can lead to **race conditions** when multiple clients access the same short URL simultaneously.
 
 A more robust approach would be to offload analytics tracking to a separate service or an external provider. Alternatively, we could use a queue-based system (e.g., Kafka, Redis Streams, or RabbitMQ) to process click updates asynchronously, ensuring data integrity and scalability.
+
+### Rate Limiting in the API
+
+The API uses Fastify’s built-in rate limiter plugin (@fastify/rate-limit) to control the request flow and prevent abuse. This ensures fair usage and prevents excessive load on the system.
+
+#### Traffic Expectations
+
+We expect the following traffic:
+
+- Shortened URL generation rate: 40 URLs per second
+- Shortened URL read rate: 4,000 URLs per second
+- Total API throughput: 4,040 requests per second
+- **Max available pods** to be deployed: 10.
+
+#### Rate Limiting Calculations
+
+To distribute the traffic evenly across 10 pods:
+
+- **Per pod generation rate**: 40 URLs/s ÷ 10 = 4 URLs/s per pod.
+- **Per pod read rate**: 4,000 URLs/s ÷ 10 = 400 URLs/s per pod.
+- **Total requests per pod**: 4 + 400 = 404 requests per second per pod.
+
+#### Scaling Considerations
+
+If traffic increases, we can increase the pod count and adjust the rate limits accordingly, an auto-scaler configuration will be needed as wel to ensure that the number of pods get increased in traffic increases.
+
+Redis-backed rate limiting (instead of in-memory) is recommended for distributed environments.
+
+This configuration ensures optimal performance while protecting the service from overload. This configuration ensure each pod will have an individual rate limit, we could also handle the traffic on the load balancer to ensure a centralized configuration.
