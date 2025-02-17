@@ -28,9 +28,9 @@ export type PaginationParams = {
   /**
    * The number of items to return
    */
-  size: number;
+  size?: number;
   /**
    * The page number to return
    */
-  page: number;
+  page?: number;
 };

@@ -1,8 +1,8 @@
 import { IShortUrl, ShortUrlModel } from '../../models/shortUrl';
 import {
-ShortUrlBaseResponse,
-UrlServiceType,
-generateShortIdWithCRC32,
+  ShortUrlBaseResponse,
+  UrlServiceType,
+  generateShortIdWithCRC32,
 } from '@src/libs';
 
 import { APIConfig } from '../../config';
@@ -73,17 +73,32 @@ const getShortUrlByShortId = async (
 
 const getShortUrls = async ({
   shortUrlIds,
+  page,
+  size,
 }: {
   shortUrlIds?: string[];
-}): Promise<ShortUrlBaseResponse[]> => {
+  page?: number;
+  size?: number;
+}): Promise<{
+  shortUrls: ShortUrlBaseResponse[];
+  total: number;
+}> => {
+  const limit = Math.max(size, 1); // Ensure size is at least 1
+  const skip = (page - 1) * limit;
+
   let query = {};
   if (shortUrlIds) {
     query = { shortId: { $in: shortUrlIds } };
   }
-  const shortUrls = await ShortUrlModel.find(query);
-  return shortUrls.map((shortUrl) =>
-    adaptShortUrlDBModelToShortUrlResponse(shortUrl)
-  );
+  const shortUrls = await ShortUrlModel.find(query)
+    .limit(limit)
+    .skip(skip)
+    .sort({ createdAt: -1 });
+  const total = await ShortUrlModel.countDocuments(query);
+  return {
+    shortUrls: shortUrls.map(adaptShortUrlDBModelToShortUrlResponse),
+    total,
+  };
 };
 
 const createShortUrl = async ({

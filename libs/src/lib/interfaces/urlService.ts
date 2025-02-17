@@ -1,4 +1,4 @@
-import { ApiResponse, UrlServiceType } from './common';
+import { ApiResponse, PaginationParams, UrlServiceType } from './common';
 
 export type ShortUrlBaseResponse = {
   /**
@@ -49,4 +49,4 @@ export type CreateShortenUrlRequest = {
 
 export type GetShortUrlsRequest = {
   userId?: string;
-};
+} & PaginationParams;

@@ -7,3 +7,9 @@ export const dbIdSchema = () =>
   }, {
     message: 'Invalid MongoDB ObjectId',
   });
+
+  
+  export const paginationParamsSchema = z.object({
+    size: z.coerce.number().int().positive().max(100).default(10),
+    page: z.coerce.number().int().positive().default(1),
+  });

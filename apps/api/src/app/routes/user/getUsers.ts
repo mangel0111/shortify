@@ -7,6 +7,7 @@ import {
 } from 'fastify';
 
 import UserService from '../../services/userService';
+import { paginationParamsSchema } from '../../utils/schema.utils';
 import z from 'zod';
 
 export type GetUsersRoutes = {
@@ -14,10 +15,7 @@ export type GetUsersRoutes = {
   Querystring: GetUsersRequest;
 };
 
-export const getUsersQueriesSchema = z.object({
-  size: z.coerce.number().int().positive().max(100).default(10),
-  page: z.coerce.number().int().positive().default(1),
-});
+export const getUsersQueriesSchema = z.object({}).and(paginationParamsSchema);
 
 export const getUsers: RouteHandlerMethod<
   RawServerDefault,

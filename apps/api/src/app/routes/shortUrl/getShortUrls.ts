@@ -5,10 +5,10 @@ import {
   RawServerDefault,
   RouteHandlerMethod,
 } from 'fastify';
+import { dbIdSchema, paginationParamsSchema } from '../../utils/schema.utils';
 
 import ShortURLService from '../../services/shortUrlService';
 import UserService from '../../services/userService';
-import { dbIdSchema } from '../../utils/schema.utils';
 import z from 'zod';
 
 export type GetShortUrlRoutes = {
@@ -20,7 +20,7 @@ export const getShortUrlQuerySchema = z
   .object({
     userId: dbIdSchema().optional(),
   })
-  .strict();
+  .and(paginationParamsSchema);
 
 export const getShortUrls: RouteHandlerMethod<
   RawServerDefault,
@@ -29,16 +29,22 @@ export const getShortUrls: RouteHandlerMethod<
   GetShortUrlRoutes
 > = async (request) => {
   let shortUrlIds;
+
   if (request?.query?.userId) {
     const user = await UserService.getUserById(request.query.userId);
     shortUrlIds = user.attributes.urlsShortened.map((url) =>
       url.split('/').pop()
     );
   }
-  const shortUrls = await ShortURLService.getShortUrls({
+  const { shortUrls, total } = await ShortURLService.getShortUrls({
     shortUrlIds,
+    size: request.query.size,
+    page: request.query.page,
   });
   return {
     data: shortUrls,
+    metadata: {
+      total,
+    },
   };
 };
