@@ -1,10 +1,4 @@
-import {
-  AppBar,
-  Box,
-  IconButton,
-  Toolbar,
-  Typography,
-} from '@mui/material';
+import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
 import { Link, useLocation } from 'react-router';
 
 import { FC } from 'react';
@@ -42,7 +36,7 @@ export const NavBar: FC = () => {
                 key={page.path}
                 sx={{
                   display: 'block',
-                  margin: 1
+                  margin: 1,
                 }}
               >
                 <Link to={page.path} style={{ textDecoration: 'none' }}>

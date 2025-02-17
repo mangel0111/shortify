@@ -12,7 +12,7 @@ permissions:
     contents: read
 
 jobs:
-    main:
+    lint-and-build:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v4
@@ -20,14 +20,32 @@ jobs:
             fetch-depth: 0
         - uses: actions/setup-node@v3
           with:
-            node-version: 20
+            node-version: 22
             cache: 'npm'
-        # This line enables distribution
-        # The "--stop-agents-after" is optional, but allows idle agents to shut down once the "e2e-ci" targets have been requested
-        # - run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e-ci"
         - run: npm ci
   
         - uses: nrwl/nx-set-shas@v4
   
         - run: npx nx format:check
         - run: npx nx affected -t lint test build e2e-ci
+
+        - name: Build UI
+          run: npm run build:ui
+
+        - name: Build API
+          run: npm run build:api
+
+        - name: Build libs
+          run: npm run build:lib
+
+        - name: Run Linting UI
+          run: npm run lint:ui
+
+        - name: Run Linting API
+          run: npm run lint:ui
+
+        - name: Run Linting UI:e2e
+          run: npm run lint:e2e
+
+        - name: Run Linting UI:e2e
+          run: npm run lint:lib
