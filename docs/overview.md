@@ -191,3 +191,22 @@ If traffic increases, we can increase the pod count and adjust the rate limits a
 Redis-backed rate limiting (instead of in-memory) is recommended for distributed environments.
 
 This configuration ensures optimal performance while protecting the service from overload. This configuration ensure each pod will have an individual rate limit, we could also handle the traffic on the load balancer to ensure a centralized configuration.
+
+#### Testing Setup
+
+Testing is an essential part of our development workflow. We use different testing frameworks depending on the project scope:
+
+- Unit & Integration Tests: Jest is configured and used across all projects.
+- End-to-End (E2E) Testing for UI: Playwright is used for frontend testing.
+- End-to-End (E2E) Testing for API: Jest is used along with fastify.inject for API testing.
+- API E2E Testing Status
+
+**Note**: Currently, the API's E2E tests require additional work to properly mock infrastructure dependencies. This will be addressed as a next step in our testing improvements.
+
+#### What is next?
+
+To further enhance the system, the following improvements are planned:
+
+- User Account Management: Implementing proper account setup, including authentication, authorization, and user profile management.
+- API Pagination: Adding pagination support to improve performance and usability of the endpoints.
+- Editable Short URLs: Allowing users to modify their own shortened URLs. To maintain uniqueness, the short URL ID will be generated using a hash of the UserId + URL.
