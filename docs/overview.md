@@ -203,7 +203,7 @@ Testing is an essential part of our development workflow. We use different testi
 
 **Note**: Currently, the API's E2E tests require additional work to properly mock infrastructure dependencies. This will be addressed as a next step in our testing improvements.
 
-#### What is next?
+## What is next?
 
 To further enhance the system, the following improvements are planned:
 
