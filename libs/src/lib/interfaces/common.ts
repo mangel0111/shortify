@@ -3,6 +3,12 @@
  */
 export type ApiResponse<T> = {
   data: T;
+  metadata?: {
+    /**
+     * The total number of items
+     */
+    total?: number;
+  };
 };
 
 export enum UrlServiceType {
@@ -16,4 +22,15 @@ export type ErrorResponse = {
     title: string;
     detail: string;
   }[];
+};
+
+export type PaginationParams = {
+  /**
+   * The number of items to return
+   */
+  size: number;
+  /**
+   * The page number to return
+   */
+  page: number;
 };

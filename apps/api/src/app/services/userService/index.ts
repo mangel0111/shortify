@@ -1,4 +1,9 @@
-import { CreateUserRequest, UrlServiceType, UserBaseResponse } from '@src/libs';
+import {
+  CreateUserRequest,
+  GetUsersRequest,
+  UrlServiceType,
+  UserBaseResponse,
+} from '@src/libs';
 import { IUser, UserModel } from '../../models/user';
 
 const adaptUserDBModelToUserResponse = (user: IUser): UserBaseResponse => {
@@ -20,9 +25,23 @@ const adaptUserDBModelToUserResponse = (user: IUser): UserBaseResponse => {
  * This service is responsible for handling the logic for the short url service.
  */
 const UserService = {
-  getUsers: async (): Promise<UserBaseResponse[]> => {
-    const users = await UserModel.find({});
-    return users.map((user) => adaptUserDBModelToUserResponse(user));
+  getUsers: async (
+    params: GetUsersRequest
+  ): Promise<{
+    users: UserBaseResponse[];
+    total: number;
+  }> => {
+    const limit = Math.max(params.size, 1); // Ensure size is at least 1
+    const skip = (params.page - 1) * limit;
+    const total = await UserModel.countDocuments({});
+    const users = await UserModel.find({})
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 }); // Sort by newest first
+    return {
+      users: users.map((user) => adaptUserDBModelToUserResponse(user)),
+      total,
+    };
   },
   getUserById: async (id: string): Promise<UserBaseResponse> => {
     const user = await UserModel.findById(id);

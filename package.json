@@ -19,6 +19,8 @@
     "lint:api": "nx lint api",
     "build:api": "nx build api",
     " - - - - - - - CORE - - - - - - - ": "",
+    "lint": "nx run-many --target=lint --all",
+    "build": "nx run-many --target=build --all",
     "graph": "nx graph",
     "start:infra": "docker compose up -d",
     "stop:infra": "docker compose down",

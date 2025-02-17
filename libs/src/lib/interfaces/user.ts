@@ -1,4 +1,4 @@
-import { ApiResponse, UrlServiceType } from './common';
+import { ApiResponse, PaginationParams, UrlServiceType } from './common';
 
 type UserAttributesProps = {
   /**
@@ -36,6 +36,7 @@ export type UserBaseResponse = {
 };
 
 export type GetUsersResponse = ApiResponse<UserBaseResponse[]>;
+export type GetUsersRequest = PaginationParams;
 export type GetUserByIdResponse = ApiResponse<UserBaseResponse>;
 export type CreateUserResponse = ApiResponse<UserBaseResponse>;
 export type CreateUserRequest = UserAttributesProps;

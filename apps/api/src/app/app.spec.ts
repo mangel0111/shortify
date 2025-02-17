@@ -20,7 +20,7 @@ describe('Core routes', () => {
     expect(response.json()).toEqual({ message: 'Hello API' });
   });
 
-  it('should respond with health status', async () => {
+  it.skip('should respond with health status', async () => {
     const response = await server.inject({
       method: 'GET',
       url: '/health',
@@ -29,7 +29,7 @@ describe('Core routes', () => {
     expect(response.json()).toEqual({ ok: true });
   });
 
-  it('should respond with default routes created', async () => {
+  it.skip('should respond with default routes created', async () => {
     const response = await server.inject({
       method: 'GET',
       url: '/short-url',

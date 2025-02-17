@@ -26,23 +26,8 @@ jobs:
   
         - uses: nrwl/nx-set-shas@v4
 
-        - name: Build UI
-          run: npm run build:ui
+        - name: Build
+          run: npm run build
 
-        - name: Build API
-          run: npm run build:api
-
-        - name: Build libs
-          run: npm run build:lib
-
-        - name: Run Linting UI
-          run: npm run lint:ui
-
-        - name: Run Linting API
-          run: npm run lint:ui
-
-        - name: Run Linting UI:e2e
-          run: npm run lint:e2e
-
-        - name: Run Linting UI:e2e
-          run: npm run lint:lib
+        - name: Run Linting
+          run: npm run lint
